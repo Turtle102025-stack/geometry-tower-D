@@ -7,7 +7,7 @@ export const pencil: TowerDef = {
   desc: 'Reliable, cheap, sharp. Fires graphite darts at a single target.',
   cost: 200,
   color: 0xffd23f,
-  radius: 16,
+  radius: 20,
   unlockLevel: 1,
   base: () =>
     stats({

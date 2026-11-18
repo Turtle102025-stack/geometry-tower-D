@@ -321,7 +321,7 @@ export class GameRenderer {
   static iconArt(def: TowerDef): Container {
     const art = buildTowerArt(def.id, 0, 0, def.color);
     const c = new Container();
-    art.head.rotation = -Math.PI / 4;
+    art.head.rotation = art.aims ? -Math.PI / 4 : 0;
     c.addChild(art.base, art.head);
     return c;
   }
@@ -382,8 +382,10 @@ export class GameRenderer {
     const t = this.selected;
     if (t && this.game.towers.includes(t)) {
       const r = towerRange(t);
-      g.circle(t.x, t.y, r).fill({ color: 0xffffff, alpha: 0.05 });
-      g.circle(t.x, t.y, r).stroke({ width: 1.5, color: 0xffffff, alpha: 0.5 });
+      if (r < 1000) {
+        g.circle(t.x, t.y, r).fill({ color: 0xffffff, alpha: 0.05 });
+        g.circle(t.x, t.y, r).stroke({ width: 1.5, color: 0xffffff, alpha: 0.5 });
+      }
       g.circle(t.x, t.y, t.def.radius + 6).stroke({ width: 2, color: t.def.color, alpha: 0.9 });
       if (t.stats.support && t.stats.support.buffRate + t.stats.support.buffRange + t.stats.support.buffPierce + t.stats.support.buffDamage > 0) {
         for (const o of this.game.towers) {
@@ -397,8 +399,10 @@ export class GameRenderer {
     if (p) {
       const color = p.ok ? 0x39ff88 : 0xff3d6e;
       const range = p.def.base().range;
-      g.circle(p.x, p.y, range).fill({ color, alpha: 0.1 });
-      g.circle(p.x, p.y, range).stroke({ width: 2, color, alpha: 0.7 });
+      if (range < 1000) {
+        g.circle(p.x, p.y, range).fill({ color, alpha: 0.1 });
+        g.circle(p.x, p.y, range).stroke({ width: 2, color, alpha: 0.7 });
+      }
       g.circle(p.x, p.y, p.def.radius).stroke({ width: 2, color, alpha: 0.9 });
       const key = p.def.id;
       if (this.ghostKey !== key) {

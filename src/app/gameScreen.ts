@@ -639,7 +639,7 @@ export class GameScreen {
       grid.append(
         h('div', {}, 'Damage ', h('b', {}, String(main.damage + t.buff.damage))),
         h('div', {}, 'Pierce ', h('b', {}, String(main.pierce + t.buff.pierce))),
-        h('div', {}, 'Range ', h('b', {}, String(Math.round(s.range * (1 + t.buff.range))))),
+        h('div', {}, 'Range ', h('b', {}, s.range >= 1000 ? '∞' : String(Math.round(s.range * (1 + t.buff.range))))),
         h('div', {}, 'Speed ', h('b', {}, `${(1 / main.interval).toFixed(1)}/s`)),
       );
     }

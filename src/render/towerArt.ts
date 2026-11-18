@@ -96,6 +96,203 @@ const pencilArt: ArtFn = (a, b, color) => {
   return art(base, head, true, a >= 4 || b >= 4);
 };
 
+
+const plotterArt: ArtFn = (a, b, color) => {
+  const base = new Graphics();
+  plate(base, 4, 17, color, a, b, Math.PI / 4);
+  if (b >= 3) {
+    // graph grid on the plate
+    for (let k = -8; k <= 8; k += 4) base.moveTo(k, -9).lineTo(k, 9).moveTo(-9, k).lineTo(9, k);
+    base.stroke({ width: 0.8, color, alpha: 0.35 });
+  }
+  const head = new Graphics();
+  const axis = b >= 1 ? 15 : 11;
+  // axes
+  neonLine(head, -axis, 0, axis, 0, color, 1.4, 0.5);
+  neonLine(head, 0, -axis, 0, axis, color, 1.4, 0.5);
+  head.poly([axis + 4, 0, axis, -2.5, axis, 2.5]).fill({ color });
+  head.poly([0, -axis - 4, -2.5, -axis, 2.5, -axis]).fill({ color });
+  // barrels
+  const barrels = a >= 3 ? 3 : a >= 1 ? 2 : 1;
+  for (let i = 0; i < barrels; i++) {
+    const oy = barrels === 1 ? 0 : (i - (barrels - 1) / 2) * 5;
+    head.roundRect(2, oy - 2, a >= 2 ? 16 : 13, 4, 2).fill({ color: 0x0b1530 });
+    head.roundRect(2, oy - 2, a >= 2 ? 16 : 13, 4, 2);
+    neonStroke(head, lighten(color, 0.3), 1.2, 0.6);
+  }
+  neonCircle(head, 0, 0, 5, color, 1.6, 0.5);
+  if (b >= 2) {
+    // scope
+    neonCircle(head, -6, -8, 4, 0x39ff88, 1.2, 0.2);
+    head.moveTo(-10, -8).lineTo(-2, -8).moveTo(-6, -12).lineTo(-6, -4).stroke({ width: 0.8, color: 0x39ff88 });
+  }
+  if (b >= 4) neonLine(head, 4, 0, 30, 0, 0xffffff, 2.4, 1.4);
+  if (a >= 4) {
+    for (let k = 0; k < 14; k++) {
+      const ang = (k / 14) * Math.PI * 2;
+      head.circle(Math.cos(ang) * 21, Math.sin(ang) * 21, 1.6).fill({ color: lighten(color, 0.5) });
+    }
+  }
+  return art(base, head, true, a >= 4 || b >= 4);
+};
+
+const compassArt: ArtFn = (a, b, color) => {
+  const base = new Graphics();
+  plate(base, 8, 17, color, a, b);
+  if (b >= 4) {
+    // spirograph curve etched on the plate
+    const pts: number[] = [];
+    for (let t = 0; t <= Math.PI * 2 * 5 + 0.01; t += 0.08) {
+      const R = 10;
+      const r = 3.6;
+      const d = 6;
+      pts.push((R - r) * Math.cos(t) + d * Math.cos(((R - r) / r) * t), (R - r) * Math.sin(t) - d * Math.sin(((R - r) / r) * t));
+    }
+    base.moveTo(pts[0], pts[1]);
+    for (let i = 2; i < pts.length; i += 2) base.lineTo(pts[i], pts[i + 1]);
+    neonStroke(base, 0xff4fd8, 1, 0.6);
+  }
+  const head = new Graphics();
+  const hot = b >= 2 ? 0xff7a3d : 0xdfe8f5;
+  // legs: a V of two compass legs from the hinge
+  const legs = a >= 3 ? 4 : 2;
+  for (let i = 0; i < legs; i++) {
+    const ang = (i / legs) * Math.PI * 2 + 0.4;
+    const L = a >= 2 ? 17 : 14;
+    neonLine(head, 0, 0, Math.cos(ang) * L, Math.sin(ang) * L, hot, 2, b >= 2 ? 1 : 0.4);
+    head.circle(Math.cos(ang) * L, Math.sin(ang) * L, 1.6).fill({ color: 0xffffff });
+  }
+  // needle studs (more needles with path A)
+  const studs = a >= 1 ? 12 : 8;
+  for (let k = 0; k < studs; k++) {
+    const ang = (k / studs) * Math.PI * 2;
+    head.moveTo(Math.cos(ang) * 8, Math.sin(ang) * 8).lineTo(Math.cos(ang) * 11, Math.sin(ang) * 11);
+  }
+  head.stroke({ width: 1, color: hot, alpha: 0.8 });
+  neonCircle(head, 0, 0, 5.5, color, 2, 0.5);
+  head.circle(0, 0, 2).fill({ color: 0xffffff });
+  if (a >= 4) neonCircle(head, 0, 0, 22, color, 1.2, 0, 0.6);
+  return art(base, head, false, a >= 4 || b >= 4, b >= 4 ? 4 : b >= 1 ? 1.6 : 1.1);
+};
+
+const eraserArt: ArtFn = (a, b, color) => {
+  const base = new Graphics();
+  plate(base, 4, 19, color, a, b, 0);
+  if (b >= 1) {
+    // reload springs
+    for (const sx of [-12, 12]) {
+      base.moveTo(sx, -8);
+      for (let k = 0; k < 6; k++) base.lineTo(sx + (k % 2 ? 2.5 : -2.5), -8 + k * 3);
+      base.stroke({ width: 1, color: 0xc8d3e6, alpha: 0.8 });
+    }
+  }
+  const head = new Graphics();
+  const tubes = b >= 4 ? 3 : 1;
+  for (let i = 0; i < tubes; i++) {
+    const oy = tubes === 1 ? 0 : (i - 1) * 9;
+    head.roundRect(-2, oy - 3.5, 18, 7, 2).fill({ color: 0x18264a });
+    head.roundRect(-2, oy - 3.5, 18, 7, 2);
+    neonStroke(head, 0xc8d3e6, 1.2, 0.5);
+  }
+  // the eraser itself
+  const w = a >= 3 ? 20 : a >= 1 ? 17 : 15;
+  const hh = a >= 3 ? 14 : a >= 1 ? 12 : 10;
+  head.roundRect(-w / 2 - 4, -hh / 2, w, hh, 3).fill({ color: 0xff7eb6 });
+  head.rect(-w / 2 - 4, -hh / 2, w * 0.42, hh).fill({ color: 0x4fb3ff });
+  head.roundRect(-w / 2 - 4, -hh / 2, w, hh, 3);
+  neonStroke(head, color, 1.4, a >= 4 ? 1.4 : 0.6);
+  if (a >= 3) {
+    head.rect(-w / 2 - 4 + w * 0.42, -hh / 2, 2.5, hh).fill({ color: 0xc8d3e6 });
+    head.rect(-w / 2 - 4 + w * 0.75, -hh / 2, 2.5, hh).fill({ color: 0xc8d3e6 });
+  }
+  if (b >= 3) {
+    for (let k = 0; k < 5; k++) head.rect(-12 + k * 3, hh / 2 + 2, 2, 2).fill({ color: 0xff9ec8 });
+  }
+  if (a >= 4) {
+    head.moveTo(-w / 2 - 6, -hh / 2 - 4).lineTo(w / 2 - 2, -hh / 2 - 4);
+    neonStroke(head, 0xffffff, 1, 1);
+  }
+  return art(base, head, true, a >= 4 || b >= 4);
+};
+
+const iceArt: ArtFn = (a, b, color) => {
+  const base = new Graphics();
+  plate(base, 6, 18, color, a, b);
+  if (a >= 2) {
+    for (let k = 0; k < 6; k++) {
+      const ang = (k / 6) * Math.PI * 2;
+      const x = Math.cos(ang) * 20;
+      const y = Math.sin(ang) * 20;
+      base.poly([x, y, x + Math.cos(ang + 1.9) * 4, y + Math.sin(ang + 1.9) * 4, x + Math.cos(ang) * 6, y + Math.sin(ang) * 6]).fill({ color: 0xcff6ff, alpha: 0.8 });
+    }
+  }
+  const head = new Graphics();
+  // isometric cube
+  const s = a >= 3 ? 11 : a >= 1 ? 10 : 9;
+  const top = [0, -s, s * 0.87, -s / 2, 0, 0, -s * 0.87, -s / 2];
+  const left = [-s * 0.87, -s / 2, 0, 0, 0, s, -s * 0.87, s / 2];
+  const right = [s * 0.87, -s / 2, s * 0.87, s / 2, 0, s, 0, 0];
+  const glow = a >= 4 ? 0xffffff : color;
+  head.poly(top).fill({ color: 0xe8fbff, alpha: 0.75 });
+  head.poly(left).fill({ color: 0x7fd8ff, alpha: 0.55 });
+  head.poly(right).fill({ color: 0x3db8ff, alpha: 0.55 });
+  for (const f of [top, left, right]) {
+    head.poly(f);
+    neonStroke(head, glow, 1.3, a >= 4 ? 1.6 : 0.7);
+  }
+  if (b >= 1) {
+    head.moveTo(-3, -4).lineTo(1, 0).lineTo(-1, 4).stroke({ width: 1, color: 0xffffff, alpha: 0.9 });
+  }
+  if (b >= 2) {
+    for (const x of [-6, 0, 6]) head.poly([x - 1.5, s + 1, x + 1.5, s + 1, x, s + 6]).fill({ color: 0xcff6ff });
+  }
+  if (b >= 4 || a >= 4) {
+    // snowflake halo
+    for (let k = 0; k < 6; k++) {
+      const ang = (k / 6) * Math.PI * 2;
+      head.moveTo(Math.cos(ang) * 15, Math.sin(ang) * 15).lineTo(Math.cos(ang) * 23, Math.sin(ang) * 23);
+    }
+    neonStroke(head, b >= 4 ? 0xcff6ff : 0xffffff, 1.2, 0.8);
+  }
+  return art(base, head, false, a >= 4 || b >= 4, 0.25);
+};
+
+const vectorArt: ArtFn = (a, b, color) => {
+  const base = new Graphics();
+  plate(base, 3, 19, color, a, b, -Math.PI / 2);
+  const head = new Graphics();
+  const thick = a >= 4 ? 3.4 : a >= 3 ? 2.6 : a >= 1 ? 2.2 : 1.8;
+  const len = a >= 3 ? 24 : 20;
+  head.roundRect(-10, -4, 18, 8, 2).fill({ color: 0x0b1530 });
+  head.roundRect(-10, -4, 18, 8, 2);
+  neonStroke(head, color, 1.2, 0.5);
+  const arrowColor = a >= 4 ? 0xffffff : lighten(color, 0.3);
+  neonLine(head, -12, 0, len - 4, 0, arrowColor, thick, a >= 4 ? 1.6 : 0.9);
+  head.poly([len + 4, 0, len - 5, -5 - thick, len - 5, 5 + thick]).fill({ color: arrowColor });
+  if (a >= 2) head.poly([len + 4, 0, len - 5, -5 - thick, len - 5, 5 + thick]).stroke({ width: 1, color: 0xffffff });
+  if (b >= 1) {
+    neonCircle(head, -4, -8, 3.5, 0x39ff88, 1.1, 0.25);
+  }
+  if (b >= 3) {
+    // split arrowheads
+    for (const sy of [-1, 1]) {
+      head.moveTo(len - 6, sy * 4).lineTo(len + 2, sy * 11);
+      head.poly([len + 4, sy * 13, len - 1, sy * 8, len + 1, sy * 14]).fill({ color: arrowColor });
+    }
+    head.stroke({ width: 1.4, color: arrowColor });
+  }
+  if (b >= 4) {
+    for (let k = 0; k < 8; k++) {
+      const ang = (k / 8) * Math.PI * 2;
+      const x = Math.cos(ang) * 22;
+      const y = Math.sin(ang) * 22;
+      head.moveTo(x, y).lineTo(x + Math.cos(ang) * 5, y + Math.sin(ang) * 5);
+    }
+    neonStroke(head, color, 1.2, 0.6);
+  }
+  return art(base, head, true, a >= 4 || b >= 4);
+};
+
 const fallbackArt: ArtFn = (a, b, color) => {
   const base = new Graphics();
   plate(base, 8, 16, color, a, b);
@@ -107,12 +304,23 @@ const fallbackArt: ArtFn = (a, b, color) => {
 
 const REGISTRY: Record<string, ArtFn> = {
   pencil: pencilArt,
+  plotter: plotterArt,
+  compass: compassArt,
+  eraser: eraserArt,
+  ice: iceArt,
+  vector: vectorArt,
 };
 
 export function registerTowerArt(id: string, fn: ArtFn): void {
   REGISTRY[id] = fn;
 }
 
+/** Tower art is authored at a small size and scaled up uniformly. */
+export const TOWER_ART_SCALE = 1.25;
+
 export function buildTowerArt(id: string, a: number, b: number, color: number): TowerArt {
-  return (REGISTRY[id] ?? fallbackArt)(a, b, color);
+  const t = (REGISTRY[id] ?? fallbackArt)(a, b, color);
+  t.base.scale.set(TOWER_ART_SCALE);
+  t.head.scale.set(TOWER_ART_SCALE);
+  return t;
 }
