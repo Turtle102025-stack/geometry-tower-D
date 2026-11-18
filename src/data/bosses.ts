@@ -23,7 +23,7 @@ export const BOSSES: BossDef[] = [
     hp: 260,
     speed: 46,
     radius: 30,
-    color: 0x2ff3ff,
+    color: 0xff6a4d,
     children: [{ spec: 'oct', count: 6 }],
     shake: 8,
   },

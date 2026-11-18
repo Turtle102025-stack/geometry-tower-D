@@ -196,7 +196,7 @@ export function updateShapes(g: Game): void {
 function leak(g: Game, s: Shape): void {
   const lost = remainingRbe(s);
   s.alive = false;
-  g.events.push(EV.LEAK, s.x, s.y, lost, s.kind);
+  g.events.push(EV.LEAK, s.x, s.y, lost, s.kind, s.rank * 64 + s.mods);
   if (g.mode === 'sandbox') return;
   g.lives -= lost;
   g.stats.livesLost += lost;

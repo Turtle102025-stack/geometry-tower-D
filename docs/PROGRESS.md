@@ -29,3 +29,14 @@ To run locally instead: `npm install`, then `npm run dev`, then open http://loca
 - **Test:** place each tower, click it, buy upgrades on both paths — once one path passes tier 2 the other shows
   "PATH CAPPED" after tier 2. Keyboard: `,` and `.` buy upgrades, `T` cycles targeting, `Delete` sells.
 - `npm test`: 49 tests.
+
+## Phase 5 — Shape types, first boss, 40 Easy rounds
+- Special shapes, each readable at a glance: **Armored** (steel plates, immune to sharp), **Ghost** (dashed
+  see-through outline, needs detection), **Regrowing** (pulsing glow), **Crystal** (icy white, immune to cold),
+  **Shadow** (black, immune to explosions), **Splitting** (fracture lines; breaks into two smaller shapes).
+- **Cube** boss: a rotating 3D solid that cracks as it takes damage and bursts into six octagons.
+  (All five bosses already render; the rest arrive in later rounds.)
+- 40 hand-designed rounds introduce one new type at a time; round 30 is the Cube's debut, round 40 the Cube convoy.
+- First version of the headless simulator: `npm run sim -- --map gridline --difficulty easy`.
+- **Test:** play Easy on Gridline; or in Sandbox pick a modifier (armor, ghost…) and spawn it, or press "Cube".
+- `npm test`: 56 tests (bosses added).
