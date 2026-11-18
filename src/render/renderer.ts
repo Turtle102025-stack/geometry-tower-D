@@ -74,6 +74,8 @@ export class GameRenderer {
   selected: Tower | null = null;
   placement: PlacementPreview | null = null;
   shakeEnabled = true;
+  /** Soft glow under every shape (high quality only). */
+  private glowAll = true;
   private bossHitThrottle = 0;
 
   constructor(
@@ -109,6 +111,7 @@ export class GameRenderer {
 
   setQuality(q: Quality): void {
     this.fx.setQuality(q);
+    this.glowAll = q === 'high';
   }
 
   destroy(): void {
@@ -198,7 +201,8 @@ export class GameRenderer {
       sp.tint = s.freeze > 0 ? 0x9fdcff : s.slow > 0 ? 0xc8ecff : 0xffffff;
       sp.scale.set(s.hitFlash > 0 ? 1.18 : 1);
       n++;
-      if (s.mods & MOD.REGROW) {
+      const regrow = (s.mods & MOD.REGROW) !== 0;
+      if (regrow || (this.glowAll && !ghost)) {
         let hs = this.haloSprites[h];
         if (!hs) {
           hs = new Sprite(this.tex.glow);
@@ -208,9 +212,14 @@ export class GameRenderer {
         }
         hs.visible = true;
         hs.position.set(x, y);
-        hs.tint = RANKS[s.rank].color;
-        hs.scale.set((s.radius / 26) * (1 + 0.25 * pulse));
-        hs.alpha = 0.35 + 0.4 * pulse;
+        hs.tint = s.mods & MOD.CRYSTAL ? 0xcff6ff : s.mods & MOD.SHADOW ? 0x6b5a8e : RANKS[s.rank].color;
+        if (regrow) {
+          hs.scale.set((s.radius / 26) * (1 + 0.25 * pulse));
+          hs.alpha = 0.35 + 0.4 * pulse;
+        } else {
+          hs.scale.set((s.radius / 30) * 1.1);
+          hs.alpha = 0.22;
+        }
         h++;
       }
     }

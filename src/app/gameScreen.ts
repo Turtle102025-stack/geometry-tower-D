@@ -60,6 +60,11 @@ export class GameScreen {
   private confirmBar: HTMLElement;
   private toastEl: HTMLElement;
   private fpsEl: HTMLElement;
+  private bossBar: HTMLElement;
+  private bossName: HTMLElement;
+  private bossFill: HTMLElement;
+  private bossKey = '';
+  private lastLives = 0;
   private shopButtons = new Map<string, HTMLButtonElement>();
   private statRefs: Record<string, HTMLElement> = {};
   private toastTimer = 0;
@@ -103,7 +108,10 @@ export class GameScreen {
       h('button', { class: 'no', onclick: () => this.cancelPlacing() }, '✕'),
     );
     this.toastEl = h('div', { class: 'toast hidden' });
-    this.stage.append(this.abilityBar, this.confirmBar, this.toastEl);
+    this.bossName = h('div', { class: 'bname' });
+    this.bossFill = h('div', { class: 'fill' });
+    this.bossBar = h('div', { class: 'boss-bar hidden' }, this.bossName, h('div', { class: 'track' }, this.bossFill));
+    this.stage.append(this.abilityBar, this.confirmBar, this.toastEl, this.bossBar);
     this.tabs = h('div', { class: 'side-tabs' });
     this.sideBody = h('div', { class: 'side-body' });
     const side = h('aside', { class: 'sidebar' }, this.tabs, this.sideBody);
@@ -189,6 +197,7 @@ export class GameScreen {
     this.updateHud();
     this.updateSide();
     this.updateAbilities();
+    this.updateBossBar();
     this.fpsAcc += dt;
     this.fpsFrames++;
     if (this.fpsAcc >= 0.5) {
@@ -197,6 +206,30 @@ export class GameScreen {
       this.fpsFrames = 0;
       this.fpsEl.textContent = this.ctx.profile.settings.showFps ? `${this.fps} FPS · ${this.game.shapes.length + this.game.projectiles.length}` : '';
     }
+  }
+
+  private updateBossBar(): void {
+    let top: (typeof this.game.shapes)[number] | null = null;
+    let count = 0;
+    for (const s of this.game.shapes) {
+      if (!s.alive || s.kind === 0) continue;
+      count++;
+      if (!top || s.kind > top.kind || (s.kind === top.kind && s.hp < top.hp)) top = s;
+    }
+    if (!top) {
+      if (this.bossKey) {
+        this.bossBar.classList.add('hidden');
+        this.bossKey = '';
+      }
+      return;
+    }
+    const name = BOSSES[top.kind - 1].name.toUpperCase() + (count > 1 ? `  ×${count}` : '');
+    if (name !== this.bossKey) {
+      this.bossKey = name;
+      this.bossName.textContent = name;
+      this.bossBar.classList.remove('hidden');
+    }
+    this.bossFill.style.width = `${Math.max(0, (top.hp / top.maxHp) * 100).toFixed(1)}%`;
   }
 
   private updateHud(): void {
@@ -208,6 +241,13 @@ export class GameScreen {
     this.hudCache = key;
     this.roundEl.textContent = `ROUND ${roundShown}${total}`;
     this.livesEl.textContent = g.mode === 'sandbox' ? '♥ ∞' : `♥ ${Math.max(0, g.lives)}`;
+    if (g.lives < this.lastLives) {
+      this.livesEl.classList.remove('bump');
+      void this.livesEl.offsetWidth;
+      this.livesEl.classList.add('bump');
+    }
+    this.lastLives = g.lives;
+    this.stage.classList.toggle('danger', g.mode === 'normal' && g.lives > 0 && g.lives <= g.diff.lives * 0.25);
     this.moneyEl.textContent = fmtMoney(g.money);
     const b = this.startBtn;
     b.classList.toggle('running', g.state === 'running');

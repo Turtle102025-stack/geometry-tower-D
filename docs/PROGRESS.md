@@ -40,3 +40,17 @@ To run locally instead: `npm install`, then `npm run dev`, then open http://loca
 - First version of the headless simulator: `npm run sim -- --map gridline --difficulty easy`.
 - **Test:** play Easy on Gridline; or in Sandbox pick a modifier (armor, ghost…) and spawn it, or press "Cube".
 - `npm test`: 56 tests (bosses added).
+
+## Phase 6 — Game feel & UI
+- Shards fly off every broken side, bigger shatters on destroyed shapes, armor shells crack apart in steel
+  shards, explosions ring out, and bosses detonate with a flash and screen shake.
+- Sound effects synthesized live with the Web Audio API (no audio files), rate-limited so huge waves stay crisp.
+- Speed: START ROUND button doubles as fast-forward (1× → 2× → 3×), pause button / `P`, AUTO-start toggle.
+- Boss health bar, low-lives red warning glow, round and boss banners.
+- Menus: main menu with floating shapes, map select with thumbnails and medals, difficulty picker,
+  settings (volume, sound on/off, effects quality, screen shake, FPS), achievements, pause menu,
+  victory / defeat screens with stats and XP.
+- Saving: your profile (XP, medals, achievements, settings) and the game in progress (saved at the start
+  of every round) live in the browser's localStorage. Pick the map again and press CONTINUE.
+- Tablet: tap a tower, tap the map to preview, then ✔ PLACE.
+- **Test:** play a few rounds, open ☰ → QUIT TO MENU, then PLAY → same map → CONTINUE.

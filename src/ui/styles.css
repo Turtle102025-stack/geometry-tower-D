@@ -1111,3 +1111,73 @@ button:disabled {
     flex-wrap: wrap;
   }
 }
+
+/* boss bar + danger glow */
+
+.boss-bar {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+  width: min(460px, 70%);
+  z-index: 3;
+  pointer-events: none;
+  font-family: var(--font-display);
+  text-align: center;
+}
+
+.boss-bar .bname {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: #fff;
+  text-shadow: 0 0 10px var(--pink);
+  margin-bottom: 4px;
+}
+
+.boss-bar .track {
+  height: 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(4, 10, 24, 0.8);
+  overflow: hidden;
+}
+
+.boss-bar .fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pink), #ffb02e);
+  box-shadow: 0 0 10px var(--pink);
+  transition: width 0.1s linear;
+}
+
+.stage.danger::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 80px rgba(255, 61, 110, 0.55);
+  animation: danger 1.2s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes danger {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.stat.bump {
+  animation: bump 0.25s ease-out;
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
