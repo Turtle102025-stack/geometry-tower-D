@@ -296,6 +296,14 @@ export class GameScreen {
     }, 1400);
   }
 
+  private unlockToast(msgs: string[]): void {
+    const el = h('div', { class: 'tip unlock' }, ...msgs.map((m) => h('div', {}, `🔓 ${m}`)));
+    this.stage.append(el);
+    this.ctx.audio?.ui('buy');
+    setTimeout(() => el.classList.add('out'), 5000);
+    setTimeout(() => el.remove(), 5600);
+  }
+
   private banner(text: string, boss = false): void {
     const b = h('div', { class: 'banner' + (boss ? ' boss' : '') }, text);
     this.stage.append(b);
@@ -313,10 +321,18 @@ export class GameScreen {
         else this.banner(`ROUND ${e.a}`);
         break;
       }
-      case EV.ROUND_END:
+      case EV.ROUND_END: {
         this.ctx.onRoundCleared(g, e.a);
         if (g.mode === 'normal' && g.state !== 'won') this.ctx.saveSnapshot(g);
+        if (g.state !== 'won') {
+          const msgs = this.ctx.drainUnlockMessages();
+          if (msgs.length) {
+            this.unlockToast(msgs);
+            if (msgs.some((m) => m.startsWith('New tower'))) this.renderSide();
+          }
+        }
         break;
+      }
       case EV.VICTORY:
         this.ctx.onVictory(g);
         setTimeout(() => this.showEnd(true), 900);

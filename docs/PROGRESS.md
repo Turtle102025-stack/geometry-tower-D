@@ -66,3 +66,16 @@ To run locally instead: `npm install`, then `npm run dev`, then open http://loca
 - New-type tips: the first time a round brings a new shape type, a tip explains how to beat it.
 - **Test:** PLAY → any of the first five maps → MEDIUM or HARD. Locked maps show what unlocks them.
 - `npm test`: 90 tests (every map is checked for valid lanes, building room and shapes reaching the exit).
+
+## Phase 8 — Remaining towers, bosses, progression, polish
+- Six more towers (12 total): **Laser Pointer** (energy beam that heats up), **Projector** (reveals and strips
+  ghosts; can make shapes take double damage), **Golden Ratio** (income + interest), **Chalkboard** (boosts
+  nearby towers, discounts, ghost sight), **Protractor Boat** (water only; Pi-rate Ship hooks bosses),
+  **Tesseract** (late-game multi-target energy, folds space; Hyperfold ability).
+- All five bosses in the rounds: Cube (30), Octahedron (50), Dodecahedron (60, Medium finale),
+  Icosahedron (70) and **The Sphere** (80, Hard finale).
+- Player XP and levels unlock towers (Level 2 Ice Cube … Level 10 Tesseract); medals for each map × difficulty;
+  10 achievements, 6 of which unlock maps. Level-ups and unlocks pop up during play.
+- Balance pass 2 with the full roster (see `docs/BALANCE.md`).
+- **Test:** Sandbox gives every tower and every map. In a normal game, towers unlock as you level up.
+- `npm test`: 102 tests.

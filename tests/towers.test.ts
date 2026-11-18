@@ -134,3 +134,85 @@ describe('attacks', () => {
     expect(t.abilityCd).toBeGreaterThan(0);
   });
 });
+
+describe('support, income and late towers', () => {
+  it('Projector reveals ghosts so other towers can target them', () => {
+    const g = newGame({ mode: 'sandbox' });
+    const pencil = g.placeTower('pencil', 600, 310)!;
+    const ghost = put(g, 'hex.ghost', 600);
+    ghost.stun = 99;
+    run(g, 60);
+    expect(ghost.rank).toBe(6);
+    g.placeTower('projector', 680, 300);
+    run(g, 60 * 2);
+    expect(ghost.alive === false || ghost.rank < 6).toBe(true);
+    expect(pencil.sides).toBeGreaterThan(0);
+  });
+
+  it('Floodlight strips ghosts anywhere on the map', () => {
+    const g = newGame({ mode: 'sandbox' });
+    const p = g.placeTower('projector', 100, 600)!;
+    for (let i = 0; i < 4; i++) g.upgrade(p, 0);
+    const ghost = put(g, 'hex.ghost', 1100);
+    g.step();
+    expect(ghost.mods & MOD.GHOST).toBeFalsy();
+  });
+
+  it('Chalkboard speeds up towers in range and gives a discount', () => {
+    const g = newGame({ mode: 'sandbox' });
+    const t = g.placeTower('pencil', 600, 300)!;
+    const before = g.upgradePrice(t, 0);
+    const cb = g.placeTower('chalkboard', 660, 290)!;
+    expect(t.buff.rate).toBeCloseTo(0.15);
+    g.upgrade(cb, 1);
+    g.upgrade(cb, 1);
+    expect(t.buff.discount).toBeCloseTo(0.1);
+    expect(g.upgradePrice(t, 0)).toBeLessThan(before);
+    g.sell(cb);
+    expect(t.buff.rate).toBe(0);
+  });
+
+  it('Golden Ratio pays out at the end of every round', () => {
+    const g = newGame();
+    g.money = 5000;
+    g.placeTower('golden', 600, 300);
+    const before = g.money;
+    g.startRound();
+    for (let i = 0; i < 60 * 60 && g.state === 'running'; i++) {
+      g.step();
+      for (const s of g.shapes) s.alive = false;
+    }
+    expect(g.money - before).toBe(90 + 101);
+  });
+
+  it('Protractor Boat can only be placed on water', () => {
+    const g = newGame({ mode: 'sandbox' });
+    expect(g.placeTower('boat', 600, 300)).toBeNull();
+    expect(g.placeTower('boat', 100, 100)).toBeTruthy();
+    expect(g.placeTower('pencil', 150, 150)).toBeNull();
+  });
+
+  it('Laser beams heat up on the same target', () => {
+    const g = newGame({ mode: 'sandbox' });
+    const t = g.placeTower('laser', 600, 310)!;
+    g.upgrade(t, 1);
+    g.upgrade(t, 1);
+    const c = put(g, 'cube', 600);
+    c.stun = 99;
+    c.hp = c.maxHp = 1e6;
+    run(g, 60 * 3);
+    expect(t.beams[0][0].heat).toBeGreaterThan(3);
+  });
+
+  it('Tesseract Pocket Dimension folds shapes backwards', () => {
+    const g = newGame({ mode: 'sandbox' });
+    const t = g.placeTower('tesseract', 600, 300)!;
+    for (let i = 0; i < 3; i++) g.upgrade(t, 1);
+    t.stats.attacks[0].damage = 0;
+    const s = put(g, 'oct', 620);
+    s.stun = 99;
+    const d0 = s.dist;
+    run(g, 3);
+    expect(s.dist).toBeLessThan(d0);
+  });
+});

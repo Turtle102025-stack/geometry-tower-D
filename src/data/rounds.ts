@@ -41,10 +41,10 @@ export const ROUNDS: string[] = [
   /* 31 */ '30 oct 0.4 | 30 hex.crystal 0.3 +4',
   /* 32 */ '40 hept.regrow 0.25 | 20 oct.armor 0.5 +6',
   /* 33 */ '120 hex 0.08 | 20 oct.shadow 0.4 +6',
-  /* 34 */ '2 cube 3 | 40 hept 0.2 +4',
+  /* 34 */ '30 hept 0.25 | 2 cube 5 +6',
   /* 35 */ '40 oct.regrow 0.3 | 16 hept.ghost 0.45 +6',
   /* 36 */ '30 oct.armor 0.3 | 40 hex.split.shadow 0.2 +5',
-  /* 37 */ '2 cube 2.5 | 30 oct 0.3 +3 | 30 pent.crystal 0.2 +8',
+  /* 37 */ '30 oct 0.3 | 2 cube 4 +6 | 30 pent.crystal 0.2 +10',
   /* 38 */ '60 oct 0.18 | 40 hept.armor 0.25 +4',
   /* 39 */ '50 oct.regrow 0.2 | 30 oct 0.2 +4 | 20 hex.ghost 0.25 +6 | 2 cube 3 +10',
   // Easy finale: the Cube convoy

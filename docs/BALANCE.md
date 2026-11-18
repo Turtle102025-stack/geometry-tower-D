@@ -38,3 +38,27 @@ which the arena cannot score.
 
 Medium with only the 6 MVP towers falls around round 49 to heavy ghost/boss waves; Medium and Hard are tuned
 with the full 12-tower roster in Phase 8.
+
+## Pass 2 (Phase 8) — full 12-tower roster
+New tools: `tools/layouts/full.json` (Medium build), `tools/layouts/hard.json` (defense-first Hard build) and
+`npx tsx tools/stress.ts --difficulty hard --layout tools/layouts/hard.json --bonus 250` which replays a build
+with extra cash per round to measure how far a run is from winning.
+
+| Finding | Change |
+|---|---|
+| Laser Focal Point melted bosses at 800+ damage/s (the Sphere died in seconds). | Heat cap +30→+14, bosses ×4→×3, heat rate 7→5. Melt Down bosses ×3→×2.5. |
+| Boat Cannons were a weak tier-3 step. | Cannonball blasts hit 12 shapes (pierce 1→3). |
+| Rounds 34 and 37 (two Cubes at once) were a difficulty spike on Hard. | Cubes arrive later and further apart. |
+| Once set up, a funded Hard build never lost a life in the late game. | Icosahedron HP 7000→9500, Sphere HP 30000→55000. |
+| A 0-damage hit still removed a side (min-1 rounding). | Hits with ≤0 damage now do nothing. |
+
+### Results
+| Run | Result |
+|---|---|
+| Easy, Gridline, 6 MVP towers (`strong.json`) | Won, 0 lives lost |
+| Medium, Gridline, full roster (`full.json`) | Won, 12 lives lost |
+| Hard, Gridline, full roster (`hard.json`) | Survives to round 80, then The Sphere breaks through |
+| Hard, same build with +$250/round (≈ a better economy or placement) | Won, 0 lives lost |
+
+So Hard is beatable with a sharper build, and The Sphere is the real final exam. The scripted builds never use
+tower abilities, which add even more margin for a human player.

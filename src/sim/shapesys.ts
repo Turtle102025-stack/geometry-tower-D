@@ -213,7 +213,7 @@ function credit(g: Game, src: Tower | null, sides: number): void {
  * by an immunity — those still use up pierce), false if the shape was already gone.
  */
 export function damageShape(g: Game, s: Shape, dmg: number, type: DamageType, src: Tower | null, atk: Attack | null): boolean {
-  if (!s.alive) return false;
+  if (!s.alive || dmg <= 0) return false;
   // immunities
   if (type === 'cold' && s.mods & MOD.CRYSTAL) {
     g.events.push(EV.IMMUNE, s.x, s.y, DMG_INDEX.cold);
