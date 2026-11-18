@@ -11,7 +11,7 @@ Full brief and planning decisions: `docs/BRIEF.md`. Read it before changing game
 - **Sim/render separation**: `src/sim/` is pure game logic. It must never import from `src/render`, `src/ui`,
   `src/audio`, `pixi.js`, or touch the DOM / `window` / `Math.random` / `Date`. Randomness comes from the seeded RNG
   in `src/sim/rng.ts`. The sim talks to the outside world only through `game.events` and its public methods.
-- **Fixed timestep**: the sim advances only via `Game.tick()` (60 ticks per game-second). Speed-up runs more ticks
+- **Fixed timestep**: the sim advances only via `Game.step()` (60 ticks per game-second). Speed-up runs more ticks
   per frame; pause runs none. Never use real time inside the sim.
 - **Data-driven content**: towers + upgrades (`src/data/towers/`), shapes and bosses (`src/data/shapes.ts`,
   `src/data/bosses.ts`), rounds (`src/data/rounds.ts`), maps (`src/data/maps/`), difficulty (`src/data/difficulty.ts`).
