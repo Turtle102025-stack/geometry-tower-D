@@ -99,6 +99,17 @@ export function buildMapArt(map: MapDef, paths: Path[]): { root: Container; wate
     }
   }
   hatch.stroke({ width: 1.2, color: 0x7fd8ff, alpha: 0.35 });
+  // islands cut out of the water
+  if (map.land?.length) {
+    const land = new Graphics();
+    root.addChild(land);
+    for (const l of map.land) {
+      areaPath(land, l).fill({ color: PALETTE.bg2 });
+      areaPath(land, l).fill({ color: PALETTE.bg, alpha: 0.5 });
+      areaPath(land, l);
+      neonStroke(land, 0x3db8ff, 1.6, 0.8);
+    }
+  }
 
   // lanes
   const lane = new Graphics();

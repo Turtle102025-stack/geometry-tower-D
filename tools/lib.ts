@@ -43,13 +43,16 @@ export function bestSpot(g: Game, defId: string): { x: number; y: number } | nul
   for (let x = 30; x < 1250; x += 14) {
     for (let y = 30; y < 700; y += 14) {
       if (!g.checkPlacement(def, x, y).ok) continue;
+      // balanced coverage: sqrt per path rewards seeing every lane, not just one
       let score = 0;
       for (const p of g.paths) {
+        let cov = 0;
         for (let i = 0; i < p.count; i += 4) {
           const dx = p.xs[i] - x;
           const dy = p.ys[i] - y;
-          if (dx * dx + dy * dy <= range * range) score += 1 + 0.4 * (i / p.count);
+          if (dx * dx + dy * dy <= range * range && !g.losBlocked(x, y, p.xs[i], p.ys[i])) cov += 1 + 0.3 * (1 - i / p.count);
         }
+        score += Math.sqrt(cov) * 10;
       }
       if (range >= 400) score = 1000 - Math.hypot(x - 640, y - 360) * 0.01;
       if (score > bestScore) {

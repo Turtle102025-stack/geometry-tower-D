@@ -403,8 +403,15 @@ export class Game {
   }
 
   inWater(x: number, y: number): boolean {
-    for (const w of this.water) if (pointInArea(w, x, y)) return true;
-    return false;
+    let wet = false;
+    for (const w of this.water)
+      if (pointInArea(w, x, y)) {
+        wet = true;
+        break;
+      }
+    if (!wet) return false;
+    for (const l of this.map.land ?? []) if (pointInArea(l, x, y)) return false;
+    return true;
   }
 
   // ───────────────────────── player commands ─────────────────────────

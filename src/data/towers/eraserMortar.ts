@@ -18,9 +18,9 @@ export const eraserMortar: TowerDef = {
     {
       name: 'Big Eraser',
       upgrades: [
-        { name: 'Heavy Eraser', desc: 'Bigger blasts that hit more shapes.', cost: 360, apply: (s) => { const a = s.attacks[0]; a.splash += 12; a.pierce += 10; } },
+        { name: 'Heavy Eraser', desc: 'Bigger blasts that hit more shapes, thrown a bit faster.', cost: 360, apply: (s) => { const a = s.attacks[0]; a.splash += 12; a.pierce += 10; a.interval *= 0.88; } },
         { name: 'Hard Rubber', desc: '+1 damage per blast.', cost: 650, apply: (s) => { s.attacks[0].damage += 1; } },
-        { name: 'Industrial Eraser', desc: 'Huge blasts: +2 damage and a short stun.', cost: 1550, apply: (s) => { const a = s.attacks[0]; a.splash += 16; a.damage += 2; a.stun = 0.5; } },
+        { name: 'Industrial Eraser', desc: 'Huge blasts: +1 damage, +10 pierce and a short stun.', cost: 1700, apply: (s) => { const a = s.attacks[0]; a.splash += 16; a.damage += 1; a.pierce += 10; a.stun = 0.5; } },
         { name: 'The Great Rub-Out', desc: 'Ability: a colossal eraser slam that wipes an area and stuns bosses. Blasts get even bigger.', cost: 5600, apply: (s) => { const a = s.attacks[0]; a.damage += 2; a.splash += 12; s.ability = 'rubOut'; s.abilityCooldown = 40; } },
       ],
     },

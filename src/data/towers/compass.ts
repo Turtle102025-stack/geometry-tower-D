@@ -12,16 +12,16 @@ export const compass: TowerDef = {
   base: () =>
     stats({
       range: 100,
-      attacks: [attack({ kind: 'burst', damage: 1, pierce: 1, interval: 1.25, speed: 520, count: 8, travel: 110, style: 'needle', radius: 5 })],
+      attacks: [attack({ kind: 'burst', damage: 1, pierce: 2, interval: 1.05, speed: 520, count: 8, travel: 110, style: 'needle', radius: 5 })],
     }),
   paths: [
     {
       name: 'Radius',
       upgrades: [
-        { name: 'More Needles', desc: 'Fires 12 needles per spin.', cost: 210, apply: (s) => { s.attacks[0].count = 12; } },
+        { name: 'More Needles', desc: 'Fires 12 needles per spin, and they fly further.', cost: 210, apply: (s) => { s.attacks[0].count = 12; s.attacks[0].travel += 15; } },
         { name: 'Wide Arc', desc: '+25 range, needles fly further.', cost: 240, apply: (s) => { s.range += 25; s.attacks[0].travel += 25; } },
         { name: 'Needle Storm', desc: '16 needles, much faster spins, +1 pierce.', cost: 950, apply: (s) => { const a = s.attacks[0]; a.count = 16; a.interval *= 0.6; a.pierce += 1; } },
-        { name: 'Perfect Circle', desc: 'A ring of spinning blades orbits the tower, shredding anything that touches it.', cost: 3900, apply: (s) => { s.attacks.push(attack({ kind: 'orbit', damage: 2, dmgType: 'sharp', pierceArmor: true, orbit: { blades: 6, radius: 74, spin: 3.4, bladeRadius: 13, rehit: 0.22 } })); s.attacks[0].count = 20; } },
+        { name: 'Perfect Circle', desc: 'A ring of spinning blades orbits the tower, shredding anything that touches it.', cost: 4300, apply: (s) => { s.attacks.push(attack({ kind: 'orbit', damage: 2, dmgType: 'sharp', pierceArmor: true, orbit: { blades: 6, radius: 74, spin: 3.4, bladeRadius: 13, rehit: 0.3 } })); s.attacks[0].count = 20; } },
       ],
     },
     {

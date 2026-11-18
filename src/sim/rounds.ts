@@ -73,36 +73,30 @@ export function roundRbe(round: RoundDef): number {
   return sum;
 }
 
-/** Freeplay: generated rounds whose total "hits to clear" grows with the round number. */
+/** Freeplay: generated rounds whose total "hits to clear" keeps growing after the hand-made ones. */
 export function generateRound(n: number, seed = 0): RoundDef {
   const rng = new Rng(seed * 7919 + n * 104729 + 17);
-  const budget = Math.round(14000 * Math.pow(1.085, n - 60));
+  const budget = n <= 80 ? 3000 * Math.pow(1.06, n - 40) : 70000 * Math.pow(1.07, n - 80);
   const groups: SpawnGroup[] = [];
-  const mods = ['', '.regrow', '.armor', '.ghost', '.shadow', '.crystal', '.ghost.regrow', '.armor.regrow', '.split'];
-  const polys = ['hex', 'hept', 'oct'];
   let left = budget;
+  // bosses take a big share of every generated round
+  const pool = n >= 100 ? ['icosahedron', 'dodecahedron'] : n >= 85 ? ['dodecahedron', 'icosahedron'] : n >= 60 ? ['octahedron', 'dodecahedron'] : ['cube', 'octahedron'];
+  const boss = n % 10 === 0 && n >= 90 ? 'sphere' : rng.pick(pool);
+  const bossEach = specRbe(boss);
+  const bossCount = Math.max(1, Math.min(24, Math.floor((budget * rng.range(0.35, 0.6)) / bossEach)));
+  groups.push({ spec: boss, count: bossCount, interval: Math.max(0.6, 12 / bossCount), delay: rng.range(2, 6), path: -1 });
+  left -= bossCount * bossEach;
+  const mods = ['', '.regrow', '.armor', '.ghost', '.shadow', '.crystal', '.ghost.regrow', '.armor.regrow', '.shadow.regrow', '.armor.ghost'];
+  const polys = n >= 90 ? ['oct'] : ['hept', 'oct'];
   let delay = 0;
-  // bosses every 5 rounds, scaling up
-  if (n % 5 === 0) {
-    const tier = n >= 100 ? 'sphere' : n >= 90 ? 'icosahedron' : n >= 75 ? 'dodecahedron' : 'octahedron';
-    const each = specRbe(tier);
-    const count = Math.max(1, Math.min(12, Math.floor((budget * 0.55) / each)));
-    groups.push({ spec: tier, count, interval: 2.2, delay: 4, path: -1 });
-    left -= count * each;
-  }
   let guard = 0;
-  while (left > 0 && guard++ < 12) {
+  while (left > budget * 0.05 && guard++ < 8) {
     const spec = rng.pick(polys) + rng.pick(mods);
     const each = specRbe(spec);
-    const count = Math.max(4, Math.min(120, Math.floor((left * rng.range(0.25, 0.6)) / each)));
-    groups.push({ spec, count, interval: Math.max(0.04, rng.range(0.06, 0.2)), delay, path: -1 });
+    const count = Math.max(10, Math.min(500, Math.floor((left * rng.range(0.3, 0.7)) / each)));
+    groups.push({ spec, count, interval: Math.min(0.15, Math.max(0.012, 25 / count)), delay, path: -1 });
     left -= count * each;
-    delay += rng.range(1, 4);
-  }
-  if (n % 3 === 0) {
-    const each = specRbe('cube');
-    const count = Math.min(30, Math.max(2, Math.floor(budget / 40 / each)));
-    groups.push({ spec: rng.next() < 0.5 ? 'cube' : 'octahedron', count, interval: 1.2, delay: delay + 2, path: -1 });
+    delay += rng.range(2, 6);
   }
   return { groups };
 }

@@ -2,7 +2,8 @@ import type { Ticker } from 'pixi.js';
 import { BOSSES, BOSS_INDEX } from '../data/bosses';
 import { DIFFICULTIES, type DifficultyId } from '../data/difficulty';
 import type { MapDef } from '../data/maps/types';
-import { RANKS, specLabel } from '../data/shapes';
+import { RANKS, TYPE_TIPS, specLabel, tipKeysForSpecs } from '../data/shapes';
+import { getRound } from '../sim/rounds';
 import { TOWER_LIST } from '../data/towers';
 import type { TowerDef } from '../data/towers/types';
 import { ABILITY_INFO } from '../sim/abilities';
@@ -45,6 +46,7 @@ export class GameScreen {
   private fpsFrames = 0;
   private fps = 60;
   private abilityKey = '';
+  private seenTips = new Set<string>();
 
   // DOM
   private stage: HTMLElement;
@@ -305,6 +307,7 @@ export class GameScreen {
     const g = this.game;
     switch (e.type) {
       case EV.ROUND_START: {
+        this.showTypeTips(e.a);
         const bosses = g.roundBosses(e.a);
         if (bosses.length) this.banner(`⚠ ${bosses.map((b) => BOSSES[BOSS_INDEX[b] - 1].name.toUpperCase()).join(' + ')} INCOMING`, true);
         else this.banner(`ROUND ${e.a}`);
@@ -323,6 +326,22 @@ export class GameScreen {
         setTimeout(() => this.showEnd(false), 700);
         break;
     }
+  }
+
+  /** First time a shape type shows up (in this game), explain it briefly. */
+  private showTypeTips(round: number): void {
+    const keys = tipKeysForSpecs(getRound(round, this.game.seed).groups.map((gr) => gr.spec));
+    const fresh = keys.filter((k) => !this.seenTips.has(k));
+    if (round > 1) {
+      for (let r = 1; r < round && r <= 80; r++) for (const k of tipKeysForSpecs(getRound(r, this.game.seed).groups.map((gr) => gr.spec))) this.seenTips.add(k);
+    }
+    const show = fresh.filter((k) => !this.seenTips.has(k));
+    for (const k of keys) this.seenTips.add(k);
+    if (!show.length) return;
+    const el = h('div', { class: 'tip' }, ...show.map((k) => h('div', {}, TYPE_TIPS[k])));
+    this.stage.append(el);
+    setTimeout(() => el.classList.add('out'), 7000);
+    setTimeout(() => el.remove(), 7600);
   }
 
   // ───────────────────────── input ─────────────────────────

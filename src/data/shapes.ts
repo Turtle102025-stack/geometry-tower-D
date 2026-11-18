@@ -119,3 +119,30 @@ export function specLabel(spec: string): string {
   const mods = MOD_KEYS.filter((k) => p.mods & MOD_BY_KEY[k]).map((k) => MOD_LABELS[k]);
   return [...mods, RANKS[p.rank].name].join(' ');
 }
+
+/** One-line tips shown the first time a round introduces a shape type. */
+export const TYPE_TIPS: Record<string, string> = {
+  hept: 'HEPTAGONS split into two hexagons when hit.',
+  oct: 'OCTAGONS split into two heptagons when hit.',
+  armor: 'ARMORED shapes ignore sharp hits. Use explosions, energy or armor-piercing upgrades.',
+  ghost: 'GHOST shapes can only be targeted by towers that see ghosts (Graph Scope, Night Sight…).',
+  regrow: 'REGROWING shapes rebuild their sides if you don’t finish them off.',
+  crystal: 'CRYSTAL shapes are immune to cold and freezing.',
+  shadow: 'SHADOW shapes are drawn in permanent marker: explosions can’t touch them.',
+  split: 'SPLITTING shapes (fracture lines) break into two smaller shapes.',
+  cube: 'BOSS: the Cube bursts into six octagons when destroyed.',
+  octahedron: 'BOSS: the Octahedron bursts into three Cubes.',
+  dodecahedron: 'BOSS: the Dodecahedron bursts into three Octahedrons.',
+  icosahedron: 'BOSS: the Icosahedron bursts into two Dodecahedrons.',
+  sphere: 'FINAL BOSS: The Sphere — the shape with infinite sides.',
+};
+
+/** Tip keys that appear in a list of specs (rank keys for hept/oct, modifier keys, boss keys). */
+export function tipKeysForSpecs(specs: string[]): string[] {
+  const out = new Set<string>();
+  for (const spec of specs) {
+    const parts = spec.split('.');
+    for (const p of parts) if (p in TYPE_TIPS) out.add(p);
+  }
+  return [...out];
+}

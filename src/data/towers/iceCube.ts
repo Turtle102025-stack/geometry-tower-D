@@ -29,7 +29,7 @@ export const iceCube: TowerDef = {
       upgrades: [
         { name: 'Brittle Ice', desc: 'Frozen shapes take +1 damage from every hit.', cost: 290, apply: (s) => { s.attacks[0].brittle = 1; } },
         { name: 'Frostbite', desc: 'Pulses also deal 1 damage.', cost: 460, apply: (s) => { s.attacks[0].damage = 1; } },
-        { name: 'Cryo Burst', desc: 'Pulses much faster and hit harder.', cost: 1050, apply: (s) => { const a = s.attacks[0]; a.interval *= 0.6; a.damage += 1; } },
+        { name: 'Cryo Burst', desc: 'Pulses faster and hit harder.', cost: 1150, apply: (s) => { const a = s.attacks[0]; a.interval *= 0.75; a.damage += 1; } },
         { name: 'Shatter Point', desc: 'Frozen shapes explode into razor ice shards when destroyed. Brittle bonus +2.', cost: 4300, apply: (s) => { const a = s.attacks[0]; a.brittle = 2; a.shatter = attack({ kind: 'dart', count: 6, damage: 2, pierce: 3, speed: 520, travel: 120, style: 'shard', radius: 6 }); } },
       ],
     },

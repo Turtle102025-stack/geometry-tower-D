@@ -1,0 +1,272 @@
+{
+ "name": "Strong (6 MVP towers, greedy late game)",
+ "actions": [
+  {
+   "place": "pencil",
+   "id": "p1"
+  },
+  {
+   "place": "pencil",
+   "id": "p2"
+  },
+  {
+   "upgrade": "p1",
+   "path": 0
+  },
+  {
+   "place": "compass",
+   "id": "c1"
+  },
+  {
+   "upgrade": "p2",
+   "path": 0
+  },
+  {
+   "place": "plotter",
+   "id": "pl"
+  },
+  {
+   "upgrade": "pl",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "pl",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "place": "eraser",
+   "id": "e1"
+  },
+  {
+   "upgrade": "c1",
+   "path": 1
+  },
+  {
+   "upgrade": "e1",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "upgrade": "p1",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "place": "vector",
+   "id": "v0"
+  },
+  {
+   "upgrade": "v0",
+   "path": 1,
+   "times": 3
+  },
+  {
+   "place": "ice",
+   "id": "i1"
+  },
+  {
+   "upgrade": "i1",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "e1",
+   "path": 0
+  },
+  {
+   "place": "vector",
+   "id": "v1"
+  },
+  {
+   "upgrade": "v1",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "v1",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "upgrade": "i1",
+   "path": 1
+  },
+  {
+   "place": "eraser",
+   "id": "e2"
+  },
+  {
+   "upgrade": "e2",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "upgrade": "e2",
+   "path": 1,
+   "times": 3
+  },
+  {
+   "upgrade": "c1",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "upgrade": "c1",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "v1",
+   "path": 0
+  },
+  {
+   "upgrade": "p1",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "p1",
+   "path": 0
+  },
+  {
+   "upgrade": "e2",
+   "path": 1
+  },
+  {
+   "upgrade": "i1",
+   "path": 1
+  },
+  {
+   "upgrade": "v1",
+   "path": 0
+  },
+  {
+   "place": "vector",
+   "id": "v2"
+  },
+  {
+   "upgrade": "v2",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "v2",
+   "path": 0,
+   "times": 4
+  },
+  {
+   "upgrade": "c1",
+   "path": 1
+  },
+  {
+   "upgrade": "pl",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "upgrade": "pl",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "place": "eraser",
+   "id": "e3"
+  },
+  {
+   "upgrade": "e3",
+   "path": 0,
+   "times": 2
+  },
+  {
+   "upgrade": "e3",
+   "path": 1,
+   "times": 4
+  },
+  {
+   "place": "vector",
+   "id": "v3"
+  },
+  {
+   "upgrade": "v3",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "v3",
+   "path": 0,
+   "times": 4
+  },
+  {
+   "place": "compass",
+   "id": "c2"
+  },
+  {
+   "upgrade": "c2",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "c2",
+   "path": 0,
+   "times": 4
+  },
+  {
+   "place": "vector",
+   "id": "v4"
+  },
+  {
+   "upgrade": "v4",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "v4",
+   "path": 0,
+   "times": 4
+  },
+  {
+   "place": "ice",
+   "id": "i2"
+  },
+  {
+   "upgrade": "i2",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "i2",
+   "path": 0,
+   "times": 4
+  },
+  {
+   "place": "vector",
+   "id": "v5"
+  },
+  {
+   "upgrade": "v5",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "v5",
+   "path": 0,
+   "times": 4
+  },
+  {
+   "place": "vector",
+   "id": "v6"
+  },
+  {
+   "upgrade": "v6",
+   "path": 1,
+   "times": 2
+  },
+  {
+   "upgrade": "v6",
+   "path": 0,
+   "times": 4
+  }
+ ]
+}

@@ -16,6 +16,8 @@ export interface MapDef {
   paths: PathCmd[][];
   /** Water areas: only water towers can be placed here. */
   water: Area[];
+  /** Islands: land cut out of the water areas. */
+  land?: Area[];
   /** Solid blocks: nothing can be built on them and they block line of sight. */
   obstacles: Area[];
   /** Achievement id that unlocks the map, or null if available from the start. */

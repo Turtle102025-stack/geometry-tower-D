@@ -29,7 +29,7 @@ export const pointPlotter: TowerDef = {
       upgrades: [
         { name: 'Long Axis', desc: 'Longer axes: +40 range.', cost: 200, apply: (s) => { s.range += 40; } },
         { name: 'Graph Scope', desc: 'Can see and target Ghost shapes.', cost: 360, apply: (s) => { s.detect = true; } },
-        { name: 'Coordinate Lock', desc: '+1 damage, and precise points crack Armored shapes.', cost: 1350, apply: (s) => { const a = s.attacks[0]; a.damage += 1; a.pierceArmor = true; a.spread = 0; } },
+        { name: 'Coordinate Lock', desc: '+1 damage, +1 pierce, and precise points crack Armored shapes.', cost: 1350, apply: (s) => { const a = s.attacks[0]; a.damage += 1; a.pierce += 1; a.pierceArmor = true; a.spread = 0; } },
         { name: 'Line of Best Fit', desc: 'Also fires a laser-straight line that cuts through everything in its way.', cost: 6200, apply: (s) => { s.attacks.push(attack({ kind: 'dart', damage: 4, pierce: 60, interval: 0.9, speed: 1500, radius: 12, travel: 1500, style: 'line', pierceArmor: true })); } },
       ],
     },

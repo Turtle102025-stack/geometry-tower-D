@@ -54,3 +54,15 @@ To run locally instead: `npm install`, then `npm run dev`, then open http://loca
   of every round) live in the browser's localStorage. Pick the map again and press CONTINUE.
 - Tablet: tap a tower, tap the map to preview, then ✔ PLACE.
 - **Test:** play a few rounds, open ☰ → QUIT TO MENU, then PLAY → same map → CONTINUE.
+
+## Phase 7 — Maps, Medium & Hard, freeplay, balance tools
+- **11 maps**: 5 from the start (Gridline, Unit Circle, Parallel, Hypotenuse Lake, Monoliths — getting harder),
+  6 unlocked by achievements (Tangent, Möbius, Koch Snowflake, Archipelago, Vanishing Point, Singularity).
+  Two-lane maps, water/islands, blockers that cut line of sight, a self-crossing loop and a double spiral.
+- **Rounds 41–80** for Medium (ends at 60 with the Dodecahedron) and Hard (ends at 80 with The Sphere).
+- **Freeplay**: after a win, CONTINUE IN FREEPLAY plays the rest of the hand-made rounds and then endless
+  generated rounds that keep getting harder (bosses get more HP after round 80).
+- **Balance tools**: `npm run sim` and `npm run dps-table`; findings in `docs/BALANCE.md`.
+- New-type tips: the first time a round brings a new shape type, a tip explains how to beat it.
+- **Test:** PLAY → any of the first five maps → MEDIUM or HARD. Locked maps show what unlocks them.
+- `npm test`: 90 tests (every map is checked for valid lanes, building room and shapes reaching the exit).
